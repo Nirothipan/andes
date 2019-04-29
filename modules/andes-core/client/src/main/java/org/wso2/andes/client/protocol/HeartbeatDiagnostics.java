@@ -20,9 +20,13 @@
  */
 package org.wso2.andes.client.protocol;
 
+import org.apache.log4j.Logger;
+
 class HeartbeatDiagnostics
 {
     private static final Diagnostics _impl = init();
+
+    private static final Logger log = Logger.getLogger(HeartbeatDiagnostics.class);
 
     private static Diagnostics init()
     {
@@ -78,14 +82,14 @@ class HeartbeatDiagnostics
 
         public void timeout()
         {
-            for(int i = 0; i < messages.length; i++)
-            {
-                if(messages[i] != null)
-                {
-                    System.out.println(messages[i]);
+            if (log.isDebugEnabled()) {
+                for (int i = 0; i < messages.length; i++) {
+                    if (messages[i] != null) {
+                        log.debug(messages[i]);
+                    }
                 }
+                log.debug(System.currentTimeMillis() + ": timed out");
             }
-            System.out.println(System.currentTimeMillis() + ": timed out");
         }
 
         public void received(boolean heartbeat)
@@ -95,7 +99,9 @@ class HeartbeatDiagnostics
 
         public void init(int delay, int timeout)
         {
-            System.out.println(System.currentTimeMillis() + ": initialised delay=" + delay + ", timeout=" + timeout);
+            if (log.isDebugEnabled()) {
+                log.debug(System.currentTimeMillis() + ": initialised delay=" + delay + ", timeout=" + timeout);
+            }
         }
     }
 
